@@ -1,0 +1,684 @@
+<title>Leetudy 기획서</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --paper: #faf7ef;
+    --surface: #fffdf8;
+    --ink: #2e3a28;
+    --ink-muted: #6a7460;
+    --leaf: #4f7a45;
+    --leaf-strong: #3c5e35;
+    --leaf-soft: #e2ead6;
+    --sky: #4f7f9e;
+    --sky-soft: #e2eef3;
+    --wood: #9a744e;
+    --wood-soft: #f1e6d6;
+    --border: #ddd6c2;
+    --shadow: 37 40 20 / 0.06;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1c2418;
+      --surface: #232c1d;
+      --ink: #ece5d6;
+      --ink-muted: #a3ad96;
+      --leaf: #8ec17c;
+      --leaf-strong: #a8d497;
+      --leaf-soft: #303e29;
+      --sky: #8cc0dd;
+      --sky-soft: #26343a;
+      --wood: #d3ac80;
+      --wood-soft: #3a2f21;
+      --border: #3a4432;
+      --shadow: 0 0 0 / 0.35;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1c2418;
+    --surface: #232c1d;
+    --ink: #ece5d6;
+    --ink-muted: #a3ad96;
+    --leaf: #8ec17c;
+    --leaf-strong: #a8d497;
+    --leaf-soft: #303e29;
+    --sky: #8cc0dd;
+    --sky-soft: #26343a;
+    --wood: #d3ac80;
+    --wood-soft: #3a2f21;
+    --border: #3a4432;
+    --shadow: 0 0 0 / 0.35;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.7;
+    padding-inline: 20px;
+    padding-block: 48px 80px;
+  }
+
+  .doc {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Gowun Batang', serif;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  a { color: var(--leaf-strong); }
+
+  /* ---- cover ---- */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-block: 8px 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  .cover .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--leaf-strong);
+    font-weight: 500;
+  }
+  .cover h1 {
+    font-size: clamp(2.1rem, 5vw, 2.8rem);
+    font-weight: 700;
+    margin: 0;
+  }
+  .cover .tagline {
+    color: var(--ink-muted);
+    font-size: 1.02rem;
+    margin: 0;
+  }
+  .cover .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .tag {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--leaf-soft);
+    color: var(--leaf-strong);
+    font-weight: 500;
+  }
+  .tag.sky { background: var(--sky-soft); color: var(--sky); }
+  .tag.wood { background: var(--wood-soft); color: var(--wood); }
+
+  /* ---- toc ---- */
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 24px;
+    padding: 18px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 44px;
+    box-shadow: 0 1px 2px rgb(var(--shadow));
+  }
+  .toc-title {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+  .toc a {
+    font-size: 0.92rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    gap: 8px;
+  }
+  .toc a:hover { color: var(--leaf-strong); }
+  .toc a .num { color: var(--leaf); font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 460px) {
+    .toc { grid-template-columns: 1fr; }
+  }
+
+  /* ---- sections ---- */
+  section { margin-bottom: 48px; scroll-margin-top: 20px; }
+  section > h2 {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--leaf-soft);
+  }
+  section > h2 .idx {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--leaf);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 520px) { .meta-grid { grid-template-columns: 1fr; } }
+  .meta-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .meta-card .label {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .meta-card .value { font-size: 1.02rem; }
+
+  ul.feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  ul.feature-list li {
+    position: relative;
+    padding-left: 22px;
+  }
+  ul.feature-list li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.65em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--leaf);
+  }
+
+  /* ---- flow (page spec) cards ---- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .flow-item {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--leaf);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .flow-item .step {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.3rem;
+    color: var(--leaf);
+    font-variant-numeric: tabular-nums;
+  }
+  .flow-item h3 {
+    font-size: 1.08rem;
+    margin: 0 0 8px;
+  }
+  .flow-item ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ink);
+  }
+  .flow-item ul li { margin-bottom: 3px; }
+  .flow-item .note {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--sky);
+    background: var(--sky-soft);
+    padding: 2px 10px;
+    border-radius: 6px;
+  }
+
+  /* ---- security table ---- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    font-size: 0.94rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  thead th {
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 500;
+    background: var(--paper);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .pill {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.must { background: var(--leaf-soft); color: var(--leaf-strong); }
+  .pill.reco { background: var(--sky-soft); color: var(--sky); border: 1px solid var(--sky); }
+  .pill.opt  { background: var(--wood-soft); color: var(--wood); border: 1px dashed var(--wood); }
+
+  /* ---- db structure ---- */
+  .db-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .db-card-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--leaf-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .db-card-head .tname {
+    font-weight: 700;
+    color: var(--leaf-strong);
+    background: var(--surface);
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+  }
+  .db-card-head .desc {
+    color: var(--ink-muted);
+    font-size: 0.86rem;
+  }
+  .db-card .scroll { overflow-x: auto; }
+  .db-card table { border-radius: 0; }
+  .db-card table th:first-child,
+  .db-card table td:first-child { white-space: nowrap; font-weight: 500; color: var(--leaf-strong); }
+
+  .callout {
+    background: var(--sky-soft);
+    border-left: 3px solid var(--sky);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+  .callout.wood { background: var(--wood-soft); border-left-color: var(--wood); }
+
+  .refs { display: flex; gap: 10px; flex-wrap: wrap; }
+  .refs li { list-style: none; }
+  .refs a {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    background: var(--surface);
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+
+<div class="doc">
+
+  <header class="cover">
+    <p class="eyebrow">커뮤니티 프로젝트 · 기획서</p>
+    <h1>Leetudy</h1>
+    <p class="tagline">스터디를 기록하고 나누는 커뮤니티</p>
+    <div class="tags">
+      <span class="tag">주제 · 스터디</span>
+      <span class="tag sky">분위기 · 친근한</span>
+      <span class="tag wood">색상 · 파스텔 자연색(나무·잎·하늘)</span>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <p class="toc-title">On this page</p>
+    <a href="#overview"><span class="num">01</span> 개요</a>
+    <a href="#features"><span class="num">02</span> 특별한 기능</a>
+    <a href="#flow"><span class="num">03</span> 페이지별 특징</a>
+    <a href="#db"><span class="num">04</span> DB 구조</a>
+    <a href="#security"><span class="num">05</span> 보안 정책</a>
+    <a href="#refs"><span class="num">06</span> 참고 사이트</a>
+  </nav>
+
+  <section id="overview">
+    <h2><span class="idx">01</span> 개요</h2>
+    <div class="meta-grid">
+      <div class="meta-card">
+        <div class="label">커뮤니티 주제</div>
+        <div class="value">스터디</div>
+      </div>
+      <div class="meta-card">
+        <div class="label">사이트 이름</div>
+        <div class="value">Leetudy</div>
+      </div>
+      <div class="meta-card">
+        <div class="label">색상 테마</div>
+        <div class="value">파스텔톤의 자연색 (나무, 잎, 하늘 등)</div>
+      </div>
+      <div class="meta-card">
+        <div class="label">분위기</div>
+        <div class="value">친근한</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2><span class="idx">02</span> 특별한 기능 아이디어</h2>
+    <ul class="feature-list">
+      <li>사진 업로드, 메모칸, 댓글, 좋아요</li>
+      <li>게시글 검색 (제목 / 내용 / 작성자)</li>
+      <li>스터디 주제별 카테고리 분류 (태그)</li>
+    </ul>
+  </section>
+
+  <section id="flow">
+    <h2><span class="idx">03</span> 페이지별 특징</h2>
+    <div class="flow">
+
+      <div class="flow-item">
+        <div class="step">01</div>
+        <div>
+          <h3>회원가입 페이지</h3>
+          <ul>
+            <li>이메일(계정) — 인증 메일 없이 <strong>중복 검사만</strong> 진행</li>
+            <li>비밀번호 / 비밀번호 확인(오타 검증용)</li>
+            <li>닉네임(이름) / 전화번호</li>
+            <li>회원가입 버튼</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">02</div>
+        <div>
+          <h3>로그인 페이지</h3>
+          <ul>
+            <li>이메일(계정) / 비밀번호 입력</li>
+            <li>로그인 · 회원가입 · 비밀번호 찾기 버튼</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">03</div>
+        <div>
+          <h3>게시물 목록</h3>
+          <ul>
+            <li>검색창(제목/내용/작성자), 카테고리 필터, 글쓰기 버튼</li>
+            <li>페이지네이션 또는 무한 스크롤</li>
+            <li>게시글 카드 — 제목, 스터디 제목, 작성자, 작성 날짜, 댓글 수, 좋아요 수, 최근 댓글(2개), 메모칸, 사진</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">04</div>
+        <div>
+          <h3>게시물 상세</h3>
+          <ul>
+            <li>제목, 작성자, 작성 날짜, 본문, 좋아요 수 + 버튼</li>
+            <li>수정 / 삭제 버튼</li>
+            <li>댓글(작성자, 내용, 작성 시간)</li>
+          </ul>
+          <span class="note">수정·삭제 버튼은 작성자 본인에게만 노출</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">05</div>
+        <div>
+          <h3>글쓰기 / 수정 페이지</h3>
+          <ul>
+            <li>스터디 주제(카테고리) 선택</li>
+            <li>게시글 제목 / 본문 / 사진 업로드</li>
+            <li>등록·수정 버튼, 취소 버튼</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">06</div>
+        <div>
+          <h3>마이페이지</h3>
+          <ul>
+            <li>프로필(닉네임, 프로필 사진) 수정, 비밀번호 변경</li>
+            <li>내가 쓴 글 / 내가 쓴 댓글 목록</li>
+            <li>좋아요한 게시글 목록</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="step">07</div>
+        <div>
+          <h3>댓글 기능</h3>
+          <ul>
+            <li>댓글 좋아요, 대댓글</li>
+            <li>댓글 수정 / 삭제</li>
+          </ul>
+          <span class="note">수정·삭제는 작성자 본인에게만 노출</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="db">
+    <h2><span class="idx">04</span> DB 구조</h2>
+    <div class="callout">테이블명은 전부 <code>ls_</code> 접두사를 붙임 (Leetudy Study 약자). 로그인/비밀번호는 Supabase Auth(<code>auth.users</code>)가 자체적으로 관리하므로 아래 테이블에는 비밀번호를 따로 저장하지 않음.</div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_users</span><span class="desc">사용자 정보 — 회원가입 + 마이페이지</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>사용자 고유 번호 (Supabase Auth의 <code>auth.users.id</code>와 동일한 값, uuid)</td></tr>
+          <tr><td>email</td><td>이메일 (로그인 계정, 가입 시 중복 검사만 진행)</td></tr>
+          <tr><td>nickname</td><td>닉네임(이름)</td></tr>
+          <tr><td>phone</td><td>전화번호</td></tr>
+          <tr><td>profile_image_url</td><td>프로필 사진 (마이페이지에서 수정 가능)</td></tr>
+          <tr><td>created_at</td><td>가입일 (자동 기록)</td></tr>
+          <tr><td>updated_at</td><td>정보 마지막 수정일</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_categories</span><span class="desc">스터디 주제별 카테고리(태그)</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>카테고리 번호 (자동 증가)</td></tr>
+          <tr><td>name</td><td>카테고리 이름 (예: 어학, 자격증, 코딩, 취업 등)</td></tr>
+          <tr><td>created_at</td><td>등록일</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_posts</span><span class="desc">게시물 — 목록/상세, 글쓰기 화면</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>게시물 번호 (자동 증가)</td></tr>
+          <tr><td>user_id</td><td>작성자 — <code>ls_users</code> 연결</td></tr>
+          <tr><td>category_id</td><td>스터디 주제 — <code>ls_categories</code> 연결</td></tr>
+          <tr><td>title</td><td>제목</td></tr>
+          <tr><td>content</td><td>내용(본문)</td></tr>
+          <tr><td>memo</td><td>메모칸</td></tr>
+          <tr><td>like_count</td><td>좋아요 수 (캐시용, <code>ls_post_likes</code> 개수와 동기화)</td></tr>
+          <tr><td>comment_count</td><td>댓글 수 (캐시용, <code>ls_comments</code> 개수와 동기화)</td></tr>
+          <tr><td>created_at</td><td>작성일</td></tr>
+          <tr><td>updated_at</td><td>수정일</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_post_images</span><span class="desc">게시물 사진 (다중 업로드)</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>사진 번호 (자동 증가)</td></tr>
+          <tr><td>post_id</td><td>첨부된 게시물 — <code>ls_posts</code> 연결</td></tr>
+          <tr><td>image_url</td><td>사진 파일 경로 (Supabase Storage 주소)</td></tr>
+          <tr><td>created_at</td><td>업로드일</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_comments</span><span class="desc">댓글 + 대댓글</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>댓글 번호 (자동 증가)</td></tr>
+          <tr><td>post_id</td><td>게시물 — <code>ls_posts</code> 연결</td></tr>
+          <tr><td>user_id</td><td>작성자 — <code>ls_users</code> 연결</td></tr>
+          <tr><td>parent_comment_id</td><td>부모 댓글 번호 (대댓글일 때만 값 존재, <code>ls_comments</code> 자기참조)</td></tr>
+          <tr><td>content</td><td>댓글 내용</td></tr>
+          <tr><td>like_count</td><td>댓글 좋아요 수 (캐시용, <code>ls_comment_likes</code> 개수와 동기화)</td></tr>
+          <tr><td>created_at</td><td>작성일</td></tr>
+          <tr><td>updated_at</td><td>수정일</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_post_likes</span><span class="desc">게시물 좋아요 (중복 방지)</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>좋아요 번호 (자동 증가)</td></tr>
+          <tr><td>post_id</td><td>좋아요 누른 게시물 — <code>ls_posts</code> 연결</td></tr>
+          <tr><td>user_id</td><td>좋아요 누른 사용자 — <code>ls_users</code> 연결</td></tr>
+          <tr><td>created_at</td><td>좋아요 누른 시간</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <p style="font-size:0.86rem; color:var(--ink-muted); margin-top:-8px;">(post_id, user_id) 조합은 중복 저장 불가 — 한 사람이 같은 글에 좋아요 1번만</p>
+
+    <div class="db-card">
+      <div class="db-card-head"><span class="tname">ls_comment_likes</span><span class="desc">댓글 좋아요 (중복 방지)</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>id</td><td>좋아요 번호 (자동 증가)</td></tr>
+          <tr><td>comment_id</td><td>좋아요 누른 댓글 — <code>ls_comments</code> 연결</td></tr>
+          <tr><td>user_id</td><td>좋아요 누른 사용자 — <code>ls_users</code> 연결</td></tr>
+          <tr><td>created_at</td><td>좋아요 누른 시간</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <p style="font-size:0.86rem; color:var(--ink-muted); margin-top:-8px;">(comment_id, user_id) 조합은 중복 저장 불가 — 한 사람이 같은 댓글에 좋아요 1번만</p>
+
+    <h3 style="font-size:1.05rem; margin: 28px 0 12px;">테이블 연결 관계</h3>
+    <ul class="feature-list">
+      <li>사용자 → 게시물 : 한 사용자가 여러 게시물 작성 가능 (<code>ls_users</code> 1 : N <code>ls_posts</code>)</li>
+      <li>사용자 → 댓글 : 한 사용자가 여러 댓글 작성 가능 (<code>ls_users</code> 1 : N <code>ls_comments</code>)</li>
+      <li>게시물 → 댓글 : 한 게시물에 여러 댓글 작성 가능 (<code>ls_posts</code> 1 : N <code>ls_comments</code>)</li>
+      <li>댓글 → 대댓글 : 한 댓글에 여러 대댓글 작성 가능 (<code>ls_comments</code> 1 : N <code>ls_comments</code>, 자기참조)</li>
+      <li>게시물 → 사진 : 한 게시물에 여러 사진 첨부 가능 (<code>ls_posts</code> 1 : N <code>ls_post_images</code>)</li>
+      <li>카테고리 → 게시물 : 한 카테고리에 여러 게시물 소속 가능 (<code>ls_categories</code> 1 : N <code>ls_posts</code>)</li>
+      <li>사용자 ↔ 게시물(좋아요) : 좋아요 기록으로 다대다 관계 연결 (<code>ls_post_likes</code>)</li>
+      <li>사용자 ↔ 댓글(좋아요) : 좋아요 기록으로 다대다 관계 연결 (<code>ls_comment_likes</code>)</li>
+    </ul>
+
+    <h3 style="font-size:1.05rem; margin: 28px 0 12px;">마이페이지 화면 연결 방법</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>화면</th><th>조회 방법</th></tr></thead>
+        <tbody>
+          <tr><td>내가 쓴 글</td><td><code>ls_posts</code>에서 <code>user_id = 내 id</code>로 조회</td></tr>
+          <tr><td>내가 쓴 댓글</td><td><code>ls_comments</code>에서 <code>user_id = 내 id</code>로 조회</td></tr>
+          <tr><td>좋아요한 게시글</td><td><code>ls_post_likes</code>에서 <code>user_id = 내 id</code>인 항목을 찾은 뒤, 연결된 <code>ls_posts</code> 조회</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout wood" style="margin-top:16px;">모든 테이블은 <strong>RLS(Row Level Security)</strong> 적용 — 본인 데이터(<code>user_id = auth.uid()</code>)만 수정·삭제 가능하도록 DB 레벨에서 강제. <code>ls_post_images</code>는 Storage 버킷 업로드 권한을 로그인 사용자로 제한하고 이미지 확장자·용량을 검증한다. (자세한 내용은 <a href="#security">05 보안 정책</a> 참고)</div>
+  </section>
+
+  <section id="security">
+    <h2><span class="idx">05</span> 보안 정책</h2>
+    <p style="color:var(--ink-muted); margin-top:-6px;">이메일 인증 절차는 생략하고 중복 검사만 진행하되, 그 외 항목은 권장 방향을 채택한다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>우선순위</th><th>항목</th><th>비고</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="pill must">필수</span></td><td>이메일 중복 검사(인증 메일 X)</td><td>회원가입 시 DB 기준 중복 여부만 확인</td></tr>
+          <tr><td><span class="pill must">필수</span></td><td>Supabase Auth 사용</td><td>비밀번호 직접 해싱 구현하지 않음</td></tr>
+          <tr><td><span class="pill must">필수</span></td><td>RLS(Row Level Security) 정책</td><td>게시글 · 댓글 · 마이페이지를 <code>auth.uid()</code> 기준 본인 데이터만 수정 · 삭제 가능하도록 DB 레벨에서 강제</td></tr>
+          <tr><td><span class="pill must">필수</span></td><td>게시글 · 댓글 XSS 방지</td><td>본문 렌더링 시 sanitize 또는 이스케이프 처리</td></tr>
+          <tr><td><span class="pill must">필수</span></td><td>사진 업로드 검증</td><td>확장자/MIME 화이트리스트, 크기 제한, Storage 버킷 권한 설정</td></tr>
+          <tr><td><span class="pill must">필수</span></td><td><code>service_role</code> 키 비노출</td><td>클라이언트에는 anon/publishable 키만 사용</td></tr>
+          <tr><td><span class="pill reco">권장</span></td><td>로그인 실패 횟수 제한</td><td>무차별 대입 공격 방지</td></tr>
+          <tr><td><span class="pill reco">권장</span></td><td>좋아요 중복 방지</td><td>(user_id + post_id) 유니크 제약</td></tr>
+          <tr><td><span class="pill opt">선택 · 추후</span></td><td>Rate Limiting</td><td>게시글 · 댓글 작성 빈도 제한</td></tr>
+          <tr><td><span class="pill opt">선택 · 추후</span></td><td>캡차</td><td>스팸/봇 가입 방지</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="refs">
+    <h2><span class="idx">06</span> 참고 사이트</h2>
+    <ul class="refs">
+      <li><a href="https://cafe.naver.com" target="_blank" rel="noopener">네이버 카페</a></li>
+      <li><a href="https://blog.naver.com" target="_blank" rel="noopener">네이버 블로그</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Leetudy 기획서</span>
+    <span>기획 완료</span>
+  </footer>
+
+</div>
